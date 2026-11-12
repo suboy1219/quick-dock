@@ -1,0 +1,226 @@
+<Window x:Class="QuickDock.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QuickDock 设置"
+        Width="820"
+        Height="760"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="True"
+        AllowDrop="True"
+        Drop="OnFilesDropped">
+    <Window.Resources>
+        <Style x:Key="SettingsListItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="Margin" Value="0,1" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Root" Background="Transparent" CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#10FFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#2A5B8CFF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Margin="16" Background="#FF15151A" CornerRadius="16"
+            BorderBrush="#30FFFFFF" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="30" ShadowDepth="10" Opacity="0.65" Color="Black" />
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="74" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="24,0,16,0" Background="Transparent"
+                  MouseLeftButtonDown="OnHeaderDrag">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="28" Height="28" CornerRadius="8">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF4C8DFF" Offset="0" />
+                                <GradientStop Color="#FF8B5CF6" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <UniformGrid Rows="2" Columns="2" Width="13" Height="13" HorizontalAlignment="Center"
+                                     VerticalAlignment="Center">
+                            <Border Background="White" CornerRadius="1" Margin="0,0,1.5,1.5" />
+                            <Border Background="White" CornerRadius="1" Margin="1.5,0,0,1.5" />
+                            <Border Background="White" CornerRadius="1" Margin="0,1.5,1.5,0" />
+                            <Border Background="White" CornerRadius="1" Margin="1.5,1.5,0,0" />
+                        </UniformGrid>
+                    </Border>
+                    <TextBlock Text="QuickDock 设置" FontSize="15" FontWeight="SemiBold" Margin="10,0,0,0"
+                               VerticalAlignment="Center" />
+                    <TextBlock Text="鼠标旁的快速启动器" FontSize="11" Margin="12,1,0,0"
+                               VerticalAlignment="Center" Foreground="{StaticResource TextSecondaryBrush}" />
+                </StackPanel>
+                <Button Content="✕" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Width="34" Height="30" Style="{StaticResource GhostButton}" Padding="0"
+                        Click="OnCancel" ToolTip="关闭" />
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" Margin="24,0,16,0" VerticalScrollBarVisibility="Auto"
+                          Padding="0,0,8,0">
+                <StackPanel>
+                    <Border Style="{StaticResource CardStyle}" Padding="18,16">
+                        <StackPanel>
+                            <TextBlock Text="呼出快捷键" FontSize="14" FontWeight="SemiBold" />
+                            <TextBlock Text="同时按下修饰键与鼠标键，即可在光标旁打开启动器。"
+                                       FontSize="11" Margin="0,4,0,0"
+                                       Foreground="{StaticResource TextSecondaryBrush}" />
+
+                            <TextBlock Text="修饰键" FontSize="12" Margin="0,16,0,0"
+                                       Foreground="{StaticResource TextSecondaryBrush}" />
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <CheckBox x:Name="AltBox" Content="Alt" Style="{StaticResource CheckBoxStyle}"
+                                          Margin="0,0,26,0" />
+                                <CheckBox x:Name="CtrlBox" Content="Ctrl" Style="{StaticResource CheckBoxStyle}"
+                                          Margin="0,0,26,0" />
+                                <CheckBox x:Name="ShiftBox" Content="Shift" Style="{StaticResource CheckBoxStyle}"
+                                          Margin="0,0,26,0" />
+                                <CheckBox x:Name="WinBox" Content="Win" Style="{StaticResource CheckBoxStyle}" />
+                            </StackPanel>
+
+                            <TextBlock Text="鼠标键" FontSize="12" Margin="0,16,0,0"
+                                       Foreground="{StaticResource TextSecondaryBrush}" />
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <RadioButton x:Name="MiddleRadio" Content="显示器中键" Tag="Middle"
+                                             GroupName="MouseTrigger" Style="{StaticResource ChipRadio}" />
+                                <RadioButton x:Name="RightRadio" Content="鼠标右键" Tag="Right"
+                                             GroupName="MouseTrigger" Style="{StaticResource ChipRadio}" />
+                                <RadioButton x:Name="X1Radio" Content="侧键 1" Tag="XButton1"
+                                             GroupName="MouseTrigger" Style="{StaticResource ChipRadio}" />
+                                <RadioButton x:Name="X2Radio" Content="侧键 2" Tag="XButton2"
+                                             GroupName="MouseTrigger" Style="{StaticResource ChipRadio}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource CardStyle}" Padding="18,16" Margin="0,14,0,0">
+                        <StackPanel>
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock Text="应用列表" FontSize="14" FontWeight="SemiBold" />
+                                    <TextBlock Text="按列表顺序显示在启动器中，可拖入 exe、快捷方式或文件夹。"
+                                               FontSize="11" Margin="0,4,0,0"
+                                               Foreground="{StaticResource TextSecondaryBrush}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                            VerticalAlignment="Top">
+                                    <Button Content="扫描已安装" Style="{StaticResource PrimaryButton}"
+                                            Padding="12,7" FontSize="12" Click="OnScanInstalled" />
+                                    <Button Content="+ 添加程序" Style="{StaticResource GhostButton}"
+                                            Padding="12,7" FontSize="12" Click="OnAddProgram" />
+                                    <Button Content="自定义" Style="{StaticResource GhostButton}"
+                                            Padding="12,7" FontSize="12" Margin="8,0,0,0"
+                                            Click="OnAddCustom" />
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Background="{StaticResource SurfaceBrush}" CornerRadius="10"
+                                    Margin="0,14,0,0" Padding="6">
+                                <ListBox x:Name="AppsList" Height="210" Background="Transparent"
+                                         BorderThickness="0" Padding="0"
+                                         HorizontalContentAlignment="Stretch"
+                                         ItemContainerStyle="{StaticResource SettingsListItemStyle}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="34" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="{Binding Icon}" Width="26" Height="26"
+                                                       VerticalAlignment="Center"
+                                                       RenderOptions.BitmapScalingMode="HighQuality" />
+                                                <StackPanel Grid.Column="1" Margin="10,0,12,0"
+                                                            VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Name}" FontSize="13" />
+                                                    <TextBlock Text="{Binding Path}" FontSize="10.5"
+                                                               Margin="0,2,0,0"
+                                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                                               TextTrimming="CharacterEllipsis" />
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2" Text="双击编辑" FontSize="10"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="#FF5C5C6E" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                <Button Content="编辑" Style="{StaticResource GhostButton}" Padding="12,6"
+                                        FontSize="12" Click="OnEdit" />
+                                <Button Content="删除" Style="{StaticResource DangerButton}" Padding="12,6"
+                                        FontSize="12" Margin="8,0,0,0" Click="OnDelete" />
+                                <Button Content="上移" Style="{StaticResource GhostButton}" Padding="12,6"
+                                        FontSize="12" Margin="8,0,0,0" Click="OnMoveUp" />
+                                <Button Content="下移" Style="{StaticResource GhostButton}" Padding="12,6"
+                                        FontSize="12" Margin="8,0,0,0" Click="OnMoveDown" />
+                                <TextBlock Text="提示：把 exe 或快捷方式拖进窗口即可添加" FontSize="10.5"
+                                           VerticalAlignment="Center" Margin="16,0,0,0"
+                                           Foreground="#FF5C5C6E" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource CardStyle}" Padding="18,16" Margin="0,14,0,14">
+                        <StackPanel>
+                            <TextBlock Text="行为" FontSize="14" FontWeight="SemiBold" />
+                            <CheckBox x:Name="StartupBox" Content="开机自动启动 QuickDock"
+                                      Style="{StaticResource CheckBoxStyle}" Margin="0,12,0,0" />
+                            <CheckBox x:Name="RecentBox" Content="在启动器中按最近使用排序"
+                                      Style="{StaticResource CheckBoxStyle}" Margin="0,10,0,0" />
+                            <Grid Margin="0,14,0,0">
+                                <TextBlock x:Name="ConfigPathText" FontSize="10.5"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource TextSecondaryBrush}" />
+                                <Button Content="打开配置目录" Style="{StaticResource GhostButton}"
+                                        Padding="10,5" FontSize="11" HorizontalAlignment="Right"
+                                        Click="OnOpenConfigDir" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Grid Grid.Row="2" Margin="24,0,24,0">
+                <TextBlock Text="更改会在保存后立即生效，无需管理员权限。"
+                           FontSize="10.5" VerticalAlignment="Center"
+                           Foreground="{StaticResource TextSecondaryBrush}" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="取消" Style="{StaticResource GhostButton}" Padding="20,8"
+                            Click="OnCancel" />
+                    <Button Content="保存" Style="{StaticResource PrimaryButton}" Padding="28,8"
+                            Margin="10,0,0,0" Click="OnSave" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
