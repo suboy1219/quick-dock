@@ -107,6 +107,7 @@
                 <Setter Property="CaretBrush" Value="White" />
                 <Setter Property="Padding" Value="10,8" />
                 <Setter Property="FontSize" Value="13" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="TextBox">
@@ -114,8 +115,7 @@
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="8">
-                                <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
-                                              VerticalAlignment="Center" />
+                                <ScrollViewer x:Name="PART_ContentHost" />
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsKeyboardFocused" Value="True">

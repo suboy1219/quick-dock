@@ -9,7 +9,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyName>QuickDock</AssemblyName>
     <RootNamespace>QuickDock</RootNamespace>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Product>QuickDock</Product>
     <AssemblyTitle>QuickDock 快速启动器</AssemblyTitle>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
