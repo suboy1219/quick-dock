@@ -202,6 +202,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(settingsItem);
         menu.Items.Add(_startupMenuItem);
         menu.Items.Add(new WinForms.ToolStripSeparator());
+        menu.Items.Add(HelpMenu.Create());
         menu.Items.Add(exitItem);
 
         foreach (WinForms.ToolStripItem item in menu.Items)
